@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -58,6 +59,12 @@ class Handler extends ExceptionHandler
         if ($exception instanceof NotFoundHttpException){
             if ($request->ajax() || $request->wantsJson()){
                 return response(['message' => 'URI not found'], 404);
+            }
+        }
+
+        if ($exception instanceof AccessDeniedHttpException){
+            if ($request->ajax() || $request->wantsJson()){
+                return response(['message' => 'This action is unauthorized.'], 401);
             }
         }
 

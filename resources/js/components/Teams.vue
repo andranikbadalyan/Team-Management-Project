@@ -57,14 +57,14 @@
 
                         <!-- Edit Button -->
                         <td style="vertical-align: middle;">
-                            <a class="action-link" tabindex="-1" @click="edit(team)">
+                            <a class="action-link" tabindex="-1" @click="edit(team)" v-if="admin">
                                 Edit
                             </a>
                         </td>
 
                         <!-- Delete Button -->
                         <td style="vertical-align: middle;">
-                            <a class="action-link text-danger" @click="destroy(team)">
+                            <a class="action-link text-danger" @click="destroy(team)" v-if="admin">
                                 Delete
                             </a>
                         </td>
@@ -204,6 +204,12 @@
                     name: ''
                 }
             };
+        },
+
+        computed:{
+            admin() {
+                return this.$root._data.admin
+            }
         },
 
         /**

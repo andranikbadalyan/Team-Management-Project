@@ -20,7 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div id="app" admin="{{ Auth::check()?Auth::user()->admin:'0' }}">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 @guest
@@ -49,6 +49,9 @@
                         </router-link>
                         <router-link tag="li" class="nav-item" :to="{ name: 'oAuth' }">
                             <a class="nav-link">oAuth</a>
+                        </router-link>
+                        <router-link tag="li" class="nav-item" :to="{ name: 'Users' }" v-if="admin">
+                            <a class="nav-link">Users</a>
                         </router-link>
                     </ul>
                     @endauth
@@ -88,11 +91,14 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            @guest
+                @yield('content')
+            @else
+                <div class="container mt-3">
+                    <router-view></router-view>
+                </div>
+            @endguest
 
-            <div class="container mt-3">
-                <router-view></router-view>
-            </div>
         </main>
     </div>
 </body>

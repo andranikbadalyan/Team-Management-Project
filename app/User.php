@@ -29,4 +29,21 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * The attributes that are appended to model.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'admin',
+    ];
+
+    public function getAdminAttribute(){
+        return $this->isAdmin();
+    }
+
+    public function isAdmin(){
+        return $this->email == 'rocky@lenderhomepage.com';
+    }
 }

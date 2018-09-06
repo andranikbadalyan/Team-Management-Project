@@ -10,59 +10,60 @@
             <div class="card-header">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span>
-                        Players
+                        Users
                     </span>
 
-                    <a class="action-link" tabindex="-1" @click="showCreatePlayerForm">
-                        Create New Player
+                    <a class="action-link" tabindex="-1" @click="showCreateUserForm">
+                        Create New User
                     </a>
                 </div>
             </div>
 
             <div class="card-body">
-                <!-- Current Players -->
-                <p class="mb-0" v-if="players.length === 0">
-                    You have not created any players.
+                <!-- Current Users -->
+                <p class="mb-0" v-if="users.length === 0">
+                    You have not created any users.
                 </p>
 
-                <table class="table table-borderless mb-0" v-if="players.length > 0">
+                <table class="table table-borderless mb-0" v-if="users.length > 0">
                     <thead>
                     <tr>
-                        <th>Player ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
                         <th></th>
                         <th></th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    <tr v-for="player in players">
+                    <tr v-for="user in users">
                         <!-- ID -->
                         <td style="vertical-align: middle;">
-                            {{ player.id }}
+                            {{ user.id }}
                         </td>
 
-                        <!-- First Name -->
+                        <!-- Name -->
                         <td style="vertical-align: middle;">
-                            {{ player.first_name }}
+                            {{ user.name }}
                         </td>
 
-                        <!-- Last Name -->
+                        <!-- Email -->
                         <td style="vertical-align: middle;">
-                            {{ player.last_name }}
+                            {{ user.email }}
                         </td>
+
 
                         <!-- Edit Button -->
                         <td style="vertical-align: middle;">
-                            <a class="action-link" tabindex="-1" @click="edit(player)">
+                            <a class="action-link" tabindex="-1" @click="edit(user)">
                                 Edit
                             </a>
                         </td>
 
                         <!-- Delete Button -->
                         <td style="vertical-align: middle;">
-                            <a class="action-link text-danger" @click="destroy(player)" v-if="admin">
+                            <a class="action-link text-danger" @click="destroy(user)">
                                 Delete
                             </a>
                         </td>
@@ -72,13 +73,13 @@
             </div>
         </div>
 
-        <!-- Create Player Modal -->
-        <div class="modal fade" id="modal-create-player" tabindex="-1" role="dialog">
+        <!-- Create User Modal -->
+        <div class="modal fade" id="modal-create-user" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">
-                            Create Player
+                            Create User
                         </h4>
 
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -96,32 +97,60 @@
                             </ul>
                         </div>
 
-                        <!-- Create Player Form -->
+                        <!-- Create User Form -->
                         <form role="form">
-                            <!-- First Name -->
+                            <!-- Name -->
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">First Name</label>
+                                <label class="col-md-3 col-form-label">Name</label>
 
                                 <div class="col-md-9">
-                                    <input id="create-player-firstname" type="text" class="form-control"
-                                           @keyup.enter="store" v-model="createForm.first_name">
+                                    <input id="create-user-name" type="text" class="form-control"
+                                           @keyup.enter="store" v-model="createForm.name">
 
                                     <span class="form-text text-muted">
-                                        Enter player first name.
+                                        Enter user's name.
                                     </span>
                                 </div>
                             </div>
 
-                            <!-- Last Name -->
+                            <!-- Email -->
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Last Name</label>
+                                <label class="col-md-3 col-form-label">Email</label>
 
                                 <div class="col-md-9">
-                                    <input id="create-player-lastname" type="text" class="form-control"
-                                           @keyup.enter="store" v-model="createForm.last_name">
+                                    <input id="create-user-email" type="text" class="form-control"
+                                           @keyup.enter="store" v-model="createForm.email">
 
                                     <span class="form-text text-muted">
-                                        Enter player last name.
+                                        Enter user's email.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Password</label>
+
+                                <div class="col-md-9">
+                                    <input id="create-user-password" type="password" class="form-control"
+                                           @keyup.enter="store" v-model="createForm.password">
+
+                                    <span class="form-text text-muted">
+                                        Enter user's password.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Confirm Password</label>
+
+                                <div class="col-md-9">
+                                    <input id="create-user-password_confirmation" type="password" class="form-control"
+                                           @keyup.enter="store" v-model="createForm.password_confirmation">
+
+                                    <span class="form-text text-muted">
+                                        Enter user's password confirmation.
                                     </span>
                                 </div>
                             </div>
@@ -141,13 +170,13 @@
             </div>
         </div>
 
-        <!-- Edit Player Modal -->
-        <div class="modal fade" id="modal-edit-player" tabindex="-1" role="dialog">
+        <!-- Edit User Modal -->
+        <div class="modal fade" id="modal-edit-user" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">
-                            Edit Player
+                            Edit User
                         </h4>
 
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -165,35 +194,64 @@
                             </ul>
                         </div>
 
-                        <!-- Edit Player Form -->
+                        <!-- Edit User Form -->
                         <form role="form">
-                            <!-- First Name -->
+                            <!-- Name -->
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">First Name</label>
+                                <label class="col-md-3 col-form-label">Name</label>
 
                                 <div class="col-md-9">
-                                    <input id="edit-player-firstname" type="text" class="form-control"
-                                           @keyup.enter="update" v-model="editForm.first_name">
+                                    <input id="edit-user-name" type="text" class="form-control"
+                                           @keyup.enter="update" v-model="editForm.name">
 
                                     <span class="form-text text-muted">
-                                        Enter your player first name.
+                                        Enter user's name.
                                     </span>
                                 </div>
                             </div>
 
-                            <!-- Last Name -->
+                            <!-- Email -->
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">First Name</label>
+                                <label class="col-md-3 col-form-label">Email</label>
 
                                 <div class="col-md-9">
-                                    <input id="edit-player-lastname" type="text" class="form-control"
-                                           @keyup.enter="update" v-model="editForm.last_name">
+                                    <input id="edit-user-email" type="text" class="form-control"
+                                           @keyup.enter="store" v-model="editForm.email">
 
                                     <span class="form-text text-muted">
-                                        Enter your player last name.
+                                        Enter user's email.
                                     </span>
                                 </div>
                             </div>
+
+                            <!-- Password -->
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Password</label>
+
+                                <div class="col-md-9">
+                                    <input id="edit-user-password" type="password" class="form-control"
+                                           @keyup.enter="store" v-model="editForm.password">
+
+                                    <span class="form-text text-muted">
+                                        Enter user's password.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Confirm Password</label>
+
+                                <div class="col-md-9">
+                                    <input id="edit-user-password_confirmation" type="password" class="form-control"
+                                           @keyup.enter="store" v-model="editForm.password_confirmation">
+
+                                    <span class="form-text text-muted">
+                                        Enter user's password confirmation.
+                                    </span>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
 
@@ -218,26 +276,24 @@
          */
         data() {
             return {
-                players: [],
+                users: [],
 
                 createForm: {
                     errors: [],
-                    first_name: '',
-                    last_name: ''
+                    name: '',
+                    email: '',
+                    password: '',
+                    password_confirmation: ''
                 },
 
                 editForm: {
                     errors: [],
-                    first_name: '',
-                    last_name: ''
+                    name: '',
+                    email: '',
+                    password: '',
+                    password_confirmation: ''
                 }
             };
-        },
-
-        computed:{
-            admin() {
-                return this.$root._data.admin
-            }
         },
 
         /**
@@ -259,74 +315,76 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.getPlayers();
+                this.getUsers();
 
-                $('#modal-create-player').on('shown.bs.modal', () => {
-                    $('#create-player-firstname').focus();
+                $('#modal-create-user').on('shown.bs.modal', () => {
+                    $('#create-user-name').focus();
                 });
 
-                $('#modal-edit-player').on('shown.bs.modal', () => {
-                    $('#edit-player-firstname').focus();
+                $('#modal-edit-user').on('shown.bs.modal', () => {
+                    $('#edit-user-name').focus();
                 });
             },
 
             /**
-             * Get all of the players for the team.
+             * Get all of the users.
              */
-            getPlayers() {
-                axios.get('/teams/' + this.$route.params.team + '/players')
+            getUsers() {
+                axios.get('/users')
                         .then(response => {
-                            this.players = response.data;
+                            this.users = response.data;
                         });
             },
 
             /**
-             * Show the form for creating new players.
+             * Show the form for creating new users.
              */
-            showCreatePlayerForm() {
-                $('#modal-create-player').modal('show');
+            showCreateUserForm() {
+                $('#modal-create-user').modal('show');
             },
 
             /**
-             * Create a new player for the team.
+             * Create a new user.
              */
             store() {
-                this.persistPlayer(
-                        'post', '/teams/' + this.$route.params.team + '/players',
-                        this.createForm, '#modal-create-player'
+                this.persistUser(
+                        'post', '/users',
+                        this.createForm, '#modal-create-user'
                 );
             },
 
             /**
-             * Edit the given player.
+             * Edit the given user.
              */
-            edit(player) {
-                this.editForm.id = player.id;
-                this.editForm.first_name = player.first_name;
-                this.editForm.last_name = player.last_name;
+            edit(user) {
+                this.editForm.id = user.id;
+                this.editForm.name = user.name;
+                this.editForm.email = user.email;
+                this.editForm.password = '';
+                this.editForm.password_confirmation = '';
 
-                $('#modal-edit-player').modal('show');
+                $('#modal-edit-user').modal('show');
             },
 
             /**
-             * Update the player being edited.
+             * Update the user being edited.
              */
             update() {
-                this.persistPlayer(
-                        'put', '/teams/' + this.$route.params.team + '/players/' + this.editForm.id,
-                        this.editForm, '#modal-edit-player'
+                this.persistUser(
+                        'put', '/users/' + this.editForm.id,
+                        this.editForm, '#modal-edit-user'
                 );
             },
 
             /**
-             * Persist the player to storage using the given form.
+             * Persist the user to storage using the given form.
              */
-            persistPlayer(method, uri, form, modal) {
+            persistUser(method, uri, form, modal) {
                 form.errors = [];
 
                 axios[method](uri, form)
                         .then(response => {
-                            this.getPlayers();
+                            this.getUsers();
 
                             form.name = '';
                             form.errors = [];
@@ -343,12 +401,12 @@
             },
 
             /**
-             * Destroy the given player.
+             * Destroy the given user.
              */
-            destroy(player) {
-                axios.delete('/teams/' + this.$route.params.team + '/players/' + player.id)
+            destroy(user) {
+                axios.delete('/users/' + user.id)
                         .then(response => {
-                            this.getPlayers();
+                            this.getUsers();
                         });
             }
         }

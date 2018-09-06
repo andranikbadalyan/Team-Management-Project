@@ -7,6 +7,14 @@ use App\Player;
 
 class PlayerController extends Controller
 {
+    public function __construct(){
+        $this->middleware(['auth']);
+        $this->middleware('can:view,App\Player')->only('index', 'show');
+        $this->middleware('can:create,App\Player')->only('store');
+        $this->middleware('can:update,App\Player')->only('update');
+        $this->middleware('can:delete,App\Player')->only('destroy');
+    }
+
     public function index($teamId){
         return Player::where('team_id', $teamId)->get();
     }

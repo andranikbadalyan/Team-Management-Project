@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     if( Auth::check() ){
         return redirect()->route('admin');
@@ -19,17 +18,25 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::resource('/users', 'UserController')->only(['index', 'store', 'update', 'destroy']);
+Route::resource('/teams', 'TeamController')->only(['index', 'store', 'update', 'destroy']);
+Route::resource('/teams/{team}/players', 'PlayerController')->only(['index', 'store', 'update', 'destroy']);
 
-Route::group(['middleware' => ['auth']], function () {
 
-    Route::resource('/teams', 'TeamController')->only(['index', 'store', 'update', 'destroy']);
-    Route::resource('/teams/{team}/players', 'PlayerController')->only(['index', 'store', 'update', 'destroy']);
 
-    Route::get('/admin', function(){
-        return view('layouts.app');
-    })->name('admin');
 
-    Route::any('/admin/{all}', function(){
-        return view('layouts.app');
-    })->where(['all' => '.*']);
-});
+/*
+|--------------------------------------------------------------------------
+| Vue Routes
+|--------------------------------------------------------------------------
+|
+| Any route that begins with /admin should be left for vue router to handle.
+|
+*/
+Route::get('/admin', function(){
+    return view('layouts.app');
+})->name('admin')->middleware('auth');
+
+Route::any('/admin/{all}', function(){
+    return view('layouts.app');
+})->where(['all' => '.*'])->middleware('auth');

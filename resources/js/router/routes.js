@@ -9,6 +9,8 @@ import Dashboard from './../components/Dashboard'
 import oAuth from './../components/oAuth'
 import Teams from './../components/Teams'
 import Players from './../components/Players'
+import Users from './../components/Users'
+
 
 const routes = [
     {
@@ -30,7 +32,12 @@ const routes = [
         path: '/admin/teams/:team/players',
         name: 'Players',
         component: Players,
-    }
+    },
+    {
+        path: '/admin/users',
+        name: 'Users',
+        component: Users,
+    },
 ];
 
 
