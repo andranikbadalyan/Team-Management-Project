@@ -8,7 +8,6 @@ use App\Team;
 class TeamController extends Controller
 {
     public function __construct(){
-        $this->middleware(['auth']);
         $this->middleware('can:view,App\Team')->only('index', 'show');
         $this->middleware('can:create,App\Team')->only('store');
         $this->middleware('can:update,App\Team')->only('update');

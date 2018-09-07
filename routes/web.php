@@ -18,9 +18,12 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::resource('/users', 'UserController')->only(['index', 'store', 'update', 'destroy']);
-Route::resource('/teams', 'TeamController')->only(['index', 'store', 'update', 'destroy']);
-Route::resource('/teams/{team}/players', 'PlayerController')->only(['index', 'store', 'update', 'destroy']);
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('/users', 'UserController')->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/teams', 'TeamController')->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/teams/{team}/players', 'PlayerController')->only(['index', 'store', 'update', 'destroy']);
+});
 
 
 
